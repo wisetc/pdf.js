@@ -1271,7 +1271,15 @@ function MessageHandler(sourceName, targetName, comObj) {
         let targetName = data.sourceName;
         Promise.resolve().then(function () {
           return action[0].call(action[1], data.data);
-        }).then((result) => {}, (reason) => {
+        }).then((result) => {
+          comObj.postMessage({
+            sourceName,
+            targetName,
+            isReply: true,
+            callbackId: data.callbackId,
+            data: result,
+          });
+        }, (reason) => {
           comObj.postMessage({
             sourceName,
             targetName,
